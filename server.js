@@ -27,9 +27,9 @@ io.on('connection', socket => {
     //Callee manda pro caller o sinal de que se conectou a sala
     socket.to(roomId).broadcast.emit('user-connected', userId)
     //Mensagens
-    socket.on('message', (message) => {
+    socket.on('message', (message, userName) => {
       //send message to the same room
-      io.to(roomId).emit('createMessage', message)
+      io.to(roomId).emit('createMessage', message, userName)
     }); 
 
     socket.on('disconnect', () => {

@@ -3,13 +3,15 @@ const videoGrid = document.getElementById('video-grid')
 const myPeer = new Peer(undefined, {
   path: '/peerjs', 
   host: '/',
-  port: '443',
+  port: '3000',
   config: {'iceServers': [
     { url: 'stun:stun.l.google.com:19302' },
     { url: 'turn:192.158.29.39:3478?transport=udp', credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=', username:'28224511:1379330808' },
     { url: 'turn:192.158.29.39:3478?transport=tcp', credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=', username:'28224511:1379330808' }
   ]}
 })
+
+var userName = prompt("Digite seu nome de usuário:");
 
 let myVideoStream
 const myVideo = document.createElement('video')
@@ -44,12 +46,12 @@ navigator.mediaDevices.getUserMedia({
   // when press enter send message
   $('html').keydown(function (e) {
     if (e.which == 13 && text.val().length !== 0) {
-      socket.emit('message', text.val());
+      socket.emit('message', text.val(),userName);
       text.val('')
     }
   });
-  socket.on("createMessage", message => {
-    $("ul").append(`<li class="message"><b>user</b><br/>${message}</li>`);
+  socket.on("createMessage", (message, userName) => {
+    $("ul").append(`<li class="message"><b>${userName}</b><br/>${message}</li>`);
     scrollToBottom()
   })
 
